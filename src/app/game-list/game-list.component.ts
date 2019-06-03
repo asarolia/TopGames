@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IGames } from './IGames';
+import { Gameobject } from './Gameobject';
 
 @Component({
   selector: 'app-game-list',
@@ -10,6 +11,8 @@ export class GameListComponent implements OnInit {
 
   pageTitle:string= "Top Selling Games";
   listFilter:string = "";
+
+  userMessage:string = "";
 
   topGamesList:IGames[] =[];
 
@@ -264,38 +267,35 @@ export class GameListComponent implements OnInit {
     this.myStorageList = this.getWebStorageData();
     
   }
-  getWebStorageData():[] {
+  getWebStorageData():any {
 
-    let output:any = [];
+    var output:any = [];
 
-    var gameObject = {
-      "Rank" : "",
-      "Name" : "",
-      "Genre" : "",
-      "Global_Sales" : "",
-      "Platform" : "",
-      "Publisher" : "",
-      "Year" : ""
-   
+    let tempObject:any;
 
-    };
+    // Create a construction function for Game Object 
+    
 
-    for (let index = 0; index < this.myStorage.length; index++) {
+    
+    for (let index = 0; index < this.topGamesList.length; index++) {
 
-      gameObject.Rank = this.myStorage.getItem('Rank'+index);
-      gameObject.Name = this.myStorage.getItem('Name'+index);
-      gameObject.Genre = this.myStorage.getItem('Genre'+index);
-      gameObject.Global_Sales = this.myStorage.getItem('Global_Sales'+index);
-      gameObject.Platform = this.myStorage.getItem('Platform'+index);
-      gameObject.Publisher = this.myStorage.getItem('Publisher'+index);
-      gameObject.Year = this.myStorage.getItem('Year'+index);
-      
-      output.push(gameObject);
+
+
+      output.push(new Gameobject(this.myStorage.getItem('Rank'+index),this.myStorage.getItem('Name'+index),this.myStorage.getItem('Genre'+index),this.myStorage.getItem('Global_Sales'+index),this.myStorage.getItem('Platform'+index),this.myStorage.getItem('Publisher'+index),this.myStorage.getItem('Year'+index)));
       
     }
+
+//    console.log(output);
 
     return output;
    // throw new Error("Method not implemented.");
   }
+
+   clearData():void{
+
+    this.myStorage.clear();
+    this.userMessage = "Storage Cleared!!";
+
+   }
 
 }
