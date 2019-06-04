@@ -56,7 +56,8 @@
                          (ratingClicked)='onRatingClicked($event)'>
                 </pm-star>
               </td> -->
-              <tr *ngFor="let item of myStorageList">
+              <!-- Now instead of picking data from storagelist pick from filtered list-->
+              <!-- <tr *ngFor="let item of myStorageList">
                   <td>{{ item.Rank}}</td>
                   <td>{{ item.Name}}</td>
                   <td>{{ item.Platform}}</td>
@@ -65,7 +66,18 @@
                   <td>{{ item.Publisher}}</td>
                   <td>{{ item.Global_Sales}}</td>
             
-                </tr>
+                </tr> -->
+                <tr *ngFor="let item of filteredStorageList">
+                    <td>{{ item.Rank}}</td>
+                    <td>{{ item.Name}}</td>
+                    <td>{{ item.Platform}}</td>
+                    <td>{{ item.Year}}</td>
+                    <td>{{ item.Genre}}</td>
+                    <td>{{ item.Publisher}}</td>
+                    <td>{{ item.Global_Sales}}</td>
+              
+                  </tr>
+  
 
             
           </tbody>

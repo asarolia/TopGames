@@ -8,20 +8,45 @@ import { Gameobject } from './Gameobject';
   styleUrls: ['./game-list.component.css']
 })
 export class GameListComponent implements OnInit {
-
-  pageTitle:string= "Top Selling Games";
-  listFilter:string = "";
-
+  
+  pageTitle:string = "Top Selling Games";
   userMessage:string = "";
-
-  topGamesList:IGames[] =[];
-
-  myStorageList:[] = [];
-
+  topGamesList:IGames[] = [];
+  myStorageList:IGames[] = [];
+  // Collection to store the filtered list data 
+  filteredStorageList:IGames[] = [];
   myStorage:any = window.localStorage;
 
+  // To filter , convert list filter into getter and setter property 
 
-  constructor() { }
+  //listFilter:string = "";
+
+  _listFilter:string;
+
+  get listFilter():string{
+
+    return this._listFilter;
+
+  }
+
+  set listFilter(filterText:string){
+
+    this._listFilter = filterText;
+
+    // custom logic to filter, validate if filter text available then filter else populate full 
+
+    this.filteredStorageList = this._listFilter ? this.getFilterData(filterText) : this.myStorageList;
+
+   // console.log(this.filteredStorageList);
+
+  }
+
+
+  constructor() {
+
+    this._listFilter = "";
+   
+   }
 
   ngOnInit():void {
 
@@ -265,6 +290,9 @@ export class GameListComponent implements OnInit {
     }
 
     this.myStorageList = this.getWebStorageData();
+
+    this.filteredStorageList= this.myStorageList;
+   
     
   }
   getWebStorageData():any {
@@ -297,5 +325,22 @@ export class GameListComponent implements OnInit {
     this.userMessage = "Storage Cleared!!";
 
    }
+
+   
+  getFilterData(filterText: string): IGames[] {
+
+    // convert the filter text in lowercase for case insensitive match 
+    filterText = filterText.toLocaleLowerCase();
+
+    const result = this.myStorageList.filter((item:IGames) => item.Name.toLocaleLowerCase().indexOf(filterText) != -1); 
+
+  //  console.log("result :"+result);
+
+    return result;
+    
+
+  //  throw new Error("Method not implemented.");
+  }
+
 
 }
