@@ -10,18 +10,3 @@ export interface IGames{
     Global_Sales:string;
     "":string;
 }
-
-/*
-
- {
-        "Rank": "1",
-        "Name": "Wii Sports",
-        "Platform": "Wii",
-        "Year": "2006",
-        "Genre": "Sports",
-        "Publisher": "Nintendo",
-        "Global_Sales": "82.74",
-        "": ""
-    },
-
-*/

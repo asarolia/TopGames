@@ -11,11 +11,16 @@ export class GameListComponent implements OnInit {
   
   pageTitle:string = "Top Selling Games";
   userMessage:string = "";
+  sortFlag:boolean = false;
   topGamesList:IGames[] = [];
   myStorageList:IGames[] = [];
   // Collection to store the filtered list data 
   filteredStorageList:IGames[] = [];
+  // Collection to store sorted list data based on year
+  yearWiseSortedList:IGames[] = [];
+
   myStorage:any = window.localStorage;
+
 
   // To filter , convert list filter into getter and setter property 
 
@@ -323,6 +328,66 @@ export class GameListComponent implements OnInit {
 
     this.myStorage.clear();
     this.userMessage = "Storage Cleared!!";
+
+   }
+
+   sortListData():void{
+     this.sortFlag = !this.sortFlag;
+
+   // this.yearWiseSortedList = this._listFilter?this.performSortFilterList():this.performSortStorageList();
+   this.filteredStorageList = this.performSortFilterList();
+
+   }
+
+   performSortFilterList():IGames[]{
+
+    let tempResult:any[];
+
+    let tempStorage = this.filteredStorageList;
+
+    // temporary array holds objects with position and sort-value
+    var mapped = this.filteredStorageList.map(function(el, i) {
+      return { index: i, value: el.Year.toLowerCase() };
+    })
+
+    // sorting the mapped array containing the reduced values
+    if (this.sortFlag){
+
+      //sort ascending
+      mapped.sort(function(a, b) {
+        if (a.value > b.value) {
+          return 1;
+        }
+        if (a.value < b.value) {
+          return -1;
+        }
+        return 0;
+      });
+  
+
+    }else{
+
+      // sort descending
+      mapped.sort(function(a, b) {
+        if (a.value > b.value) {
+          return -1;
+        }
+        if (a.value < b.value) {
+          return 1;
+        }
+        return 0;
+      });
+  
+
+    }
+    // container for the resulting order
+    tempResult = mapped.map(function(el){
+      return(tempStorage[el.index]);
+    });
+
+
+
+    return tempResult;
 
    }
 
